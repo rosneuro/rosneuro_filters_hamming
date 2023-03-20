@@ -1,6 +1,6 @@
-# ROSNeuro Hamming window
+# ROS-Neuro Hamming window
 
-This ROSNeuro filter plugin applies an Hamming window to the provided data.
+This ROS-Neuro filter plugin applies an Hamming window to the provided data.
 
 ## Algorithm:
 The filter applies the Hamming window to the data. The Hamming window is implemented as follows:
