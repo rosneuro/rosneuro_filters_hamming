@@ -1,0 +1,18 @@
+<class_libraries>
+  <library path="lib/librosneuro_filters_hamming">
+    <class name="rosneuro_filters/HammingWindowDouble" type="rosneuro::Hamming<double>"
+        base_class_type="rosneuro::Filter<double>">
+      <description>Hamming filter with doubles</description>
+    </class>
+    
+    <class name="rosneuro_filters/HammingWindowFloat" type="rosneuro::Hamming<float>"
+        base_class_type="rosneuro::Filter<float>">
+      <description>Hamming filter with floats</description>
+    </class>
+    
+    <class name="rosneuro_filters/HammingFilterInt" type="rosneuro::Hamming<int>"
+        base_class_type="rosneuro::Filter<int>">
+      <description>Hamming filter with ints</description>
+    </class>
+  </library>
+ </class_libraries> 
