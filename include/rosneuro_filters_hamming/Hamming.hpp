@@ -2,7 +2,7 @@
 #define ROSNEURO_FILTERS_HAMMING_HPP
 
 #include <Eigen/Dense>
-#include "rosneuro_filters/Filter.hpp"
+#include <rosneuro_filters/Filter.hpp>
   
 namespace rosneuro {
 

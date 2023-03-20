@@ -62,7 +62,7 @@ target_link_libraries(${PROJECT_NAME} ${Eigen3_LIBRARIES}
 #################
 
 add_executable(hamming_window test/hamming_window.cpp)
-target_link_libraries(hamming_window ${PROJECT_NAME}_hamming ${catkin_LIBRARIES}) 
+target_link_libraries(hamming_window ${PROJECT_NAME} ${catkin_LIBRARIES}) 
 
 
 

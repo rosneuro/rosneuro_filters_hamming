@@ -1,6 +1,6 @@
 #include <ros/ros.h>
-#include "rosneuro_filters/rosneuro_filters_utilities.hpp"
-#include "rosneuro_filters/Hamming.hpp"
+#include <rosneuro_filters/rosneuro_filters_utilities.hpp>
+#include "rosneuro_filters_hamming/Hamming.hpp"
 
 int main(int argc, char** argv) {
 
