@@ -2,12 +2,12 @@
 #define ROSNEURO_FILTERS_HAMMING_HPP
 
 #include <Eigen/Dense>
-#include <rosneuro_filters/Filter.hpp>
+#include <rosneuro_filters/Window.hpp>
   
 namespace rosneuro {
 
 template <typename T>
-class Hamming : public Filter<T> {
+class Hamming : public Window<T> {
 	public:
 		Hamming(void);
 		~Hamming(void) {};
@@ -20,9 +20,7 @@ class Hamming : public Filter<T> {
 
 	private:
 		int nsamples_;
-		bool is_window_set_;
 		Eigen::Matrix<T, Eigen::Dynamic, 1> window_;
-		T wnorm_;
 };
 
 template<typename T>
@@ -49,7 +47,9 @@ bool Hamming<T>::create_window(int nsamples) {
 	
 	this->wnorm_ = (this->window_.array().pow(2)).sum() / this->window_.size();
 
-	return true;
+	this->is_window_set_ = true;
+	
+	return this->is_window_set_;
 }
 
 template<typename T>
