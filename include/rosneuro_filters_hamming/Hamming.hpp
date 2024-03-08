@@ -23,6 +23,11 @@ class Hamming : public Filter<T> {
 		bool is_window_set_;
 		Eigen::Matrix<T, Eigen::Dynamic, 1> window_;
 		T wnorm_;
+
+    FRIEND_TEST(HammingTestSuite, Constructor);
+    FRIEND_TEST(HammingTestSuite, ApplyWithValidWindow);
+    FRIEND_TEST(HammingTestSuite, CreateWindowWithValidSamples);
+    FRIEND_TEST(HammingTestSuite, CreateWindowWithInvalidSamples);
 };
 
 template<typename T>
