@@ -5,74 +5,66 @@
 #include <rosneuro_filters/Filter.hpp>
   
 namespace rosneuro {
+    template <typename T>
+    class Hamming : public Filter<T> {
+        public:
+            Hamming(void);
+            ~Hamming(void) {};
 
-template <typename T>
-class Hamming : public Filter<T> {
-	public:
-		Hamming(void);
-		~Hamming(void) {};
+            bool configure(void);
+            DynamicMatrix<T> apply(const DynamicMatrix<T>& in);
 
-		bool configure(void);
-		DynamicMatrix<T> apply(const DynamicMatrix<T>& in);
+        private:
+            bool create_window(int nsamples);
 
-	private:
-		bool create_window(int nsamples);
+            int nsamples_;
+            bool is_window_set_;
+            Eigen::Matrix<T, Eigen::Dynamic, 1> window_;
+            T wnorm_;
 
-	private:
-		int nsamples_;
-		bool is_window_set_;
-		Eigen::Matrix<T, Eigen::Dynamic, 1> window_;
-		T wnorm_;
+            FRIEND_TEST(HammingTestSuite, Constructor);
+            FRIEND_TEST(HammingTestSuite, ApplyWithValidWindow);
+            FRIEND_TEST(HammingTestSuite, CreateWindowWithValidSamples);
+            FRIEND_TEST(HammingTestSuite, CreateWindowWithInvalidSamples);
+    };
 
-    FRIEND_TEST(HammingTestSuite, Constructor);
-    FRIEND_TEST(HammingTestSuite, ApplyWithValidWindow);
-    FRIEND_TEST(HammingTestSuite, CreateWindowWithValidSamples);
-    FRIEND_TEST(HammingTestSuite, CreateWindowWithInvalidSamples);
-};
+    template<typename T>
+    Hamming<T>::Hamming(void) {
+        this->name_ 	     = "hamming";
+        this->is_window_set_ = false;
+    }
 
-template<typename T>
-Hamming<T>::Hamming(void) {
-	this->name_ 	     = "hamming";
-	this->is_window_set_ = false;
+    template<typename T>
+    bool Hamming<T>::configure(void) {
+        return true;
+    }
+
+    template<typename T>
+    bool Hamming<T>::create_window(int nsamples) {
+        this->nsamples_ = nsamples;
+        this->window_ = Eigen::Matrix<T, Eigen::Dynamic, 1>::Zero(this->nsamples_);
+
+        for(auto i = 0; i<this->nsamples_; i++) {
+            this->window_(i) = (54.0 - 46.0 * cos((2.0 * M_PI * i) / (this->nsamples_ - 1))) / 100.0;
+        }
+        this->wnorm_ = (this->window_.array().pow(2)).sum() / this->window_.size();
+        return true;
+    }
+
+    template<typename T>
+    DynamicMatrix<T> Hamming<T>::apply(const DynamicMatrix<T>& in) {
+        if(!this->is_window_set_) {
+            this->is_window_set_ = this->create_window(in.rows());
+
+            if(!this->is_window_set_){
+                throw std::runtime_error("[" + this->name() + "] - First apply: cannot create the window");
+            }
+            else {
+                ROS_WARN("[%s] First apply: the window is set", this->name().c_str());
+            }
+        }
+        return in.array() * this->window_.replicate(1, in.cols()).array();
+    }
 }
-
-template<typename T>
-bool Hamming<T>::configure(void) {
-	return true;
-}
-
-template<typename T>
-bool Hamming<T>::create_window(int nsamples) {
-
-	this->nsamples_ = nsamples;
-
-	this->window_ = Eigen::Matrix<T, Eigen::Dynamic, 1>::Zero(this->nsamples_);
-
-	for(auto i = 0; i<this->nsamples_; i++)
-		this->window_(i)   = (54.0 - 46.0*cos((2.0 * M_PI * i)/(this->nsamples_-1))) / 100.0;
-	
-	
-	this->wnorm_ = (this->window_.array().pow(2)).sum() / this->window_.size();
-
-	return true;
-}
-
-template<typename T>
-DynamicMatrix<T> Hamming<T>::apply(const DynamicMatrix<T>& in) {
-
-	if(this->is_window_set_ == false) {
-		this->is_window_set_ = this->create_window(in.rows());
-		
-		if(this->is_window_set_ == false)
-			throw std::runtime_error("[" + this->name() + "] - First apply: cannot create the window");
-		else	
-			ROS_WARN("[%s] First apply: the window is set", this->name().c_str());
-	}
-	
-	return in.array() * this->window_.replicate(1, in.cols()).array();
-}
-
-}
-
 
 #endif
