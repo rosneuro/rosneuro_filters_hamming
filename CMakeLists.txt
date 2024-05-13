@@ -48,7 +48,7 @@ catkin_package(
 # Build
 ##############################################################################
 
-catkin_add_gtest(TestHamming test/test_hamming.cpp)
+catkin_add_gtest(TestHamming test/TestHamming.cpp)
 target_link_libraries(TestHamming ${GTEST_BOTH_LIBRARIES} pthread gmock ${Eigen3_LIBRARIES})
 target_link_libraries(TestHamming ${PROJECT_NAME} ${catkin_LIBRARIES})
 include_directories(${GTEST_INCLUDE_DIRS} gmock pthread include include/${PROJECT_NAME}/)
@@ -67,7 +67,7 @@ target_link_libraries(${PROJECT_NAME} ${Eigen3_LIBRARIES}
 ## Executables ##
 #################
 
-add_executable(hamming_window test/hamming_window.cpp)
+add_executable(hamming_window example/hamming_window.cpp)
 target_link_libraries(hamming_window ${PROJECT_NAME} ${catkin_LIBRARIES}) 
 
 
