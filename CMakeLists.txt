@@ -23,8 +23,7 @@ SET(CMAKE_BUILD_TYPE RelWithDebInfo)
 
 include_directories(${catkin_INCLUDE_DIRS} 
                     ${EIGEN3_INCLUDE_DIRS}
-					include
-					include/${PROJECT_NAME}/)
+					include)
 
 ##############################################################################
 # Define package
