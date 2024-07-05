@@ -1,8 +1,0 @@
-<launch>	
-	<arg name="datapath"   default="$(find rosneuro_filters_hamming)"/>
-
-	<node name="hamming_window" pkg="rosneuro_filters_hamming" type="hamming_window" output="screen">
-		<rosparam param="datapath"   subst_value="True">$(arg datapath)</rosparam>
-	
-	</node>
-</launch>
